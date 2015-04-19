@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="utf-8">
+	<title>正規表現</title>
+</head>
+<body>
+
+<script>
+
+var s1 = '@taguchi, @fkoji, @dotinstall'; // #02-#08
+var s2 = "@taguchi, @fkoji, @dotinstall\n@taguchi\n@taguchi"; // #09
+var s3 = 'taguchi@dotinstall.com, fkoji@dotinstall.com, admin@dotinstall.com'; // #10
+var s4 = 'taguchi@dotinstall.com'; // #11
+var s5 = '@taguchi'; // #12
+var s6 = '<title>ドットインストール</title>'; // #13
+var s7 = '2015-03-14'; // #14
+
+// #02
+(function(lesson) {
+	var s = '@taguchi, @fkoji, @dotinstall';
+	var rs = s.match(/taguchi/);
+	if (rs) {
+		console.log('マッチしました！' + ' ' + lesson);
+	}
+})('#02');
+
+// #03
+(function() {
+	/*
+	[abc] abcのどれか
+	[a-z] aからzまでのどれか
+	[^abc] abc以外のどれか
+	*/
+	(function(lesson) {
+		var s = '@taguchi, @fkoji, @dotinstall';
+		var rs = s.match(/t[abc]guchi/);
+		if (rs) {
+			console.log('マッチしました！'+ " " + lesson);
+		}
+	})('#03-01');
+	
+	(function(lesson) {
+		var s = '@taguchi, @fkoji, @dotinstall';
+		var rs = s.match(/t[a-z]guchi/);
+		if (rs) {
+			console.log('マッチしました！'+ " " + lesson);
+		}
+	})('#03-02');
+
+	(function(lesson) {
+		var s = '@taguchi, @fkoji, @dotinstall';
+		var rs = s.match(/t[^xyz]guchi/);
+		if (rs) {
+			console.log('マッチしました！' + ' ' + lesson);
+		}
+	})('#03-03');
+})();
+
+// #04
+(function() {
+	/*
+	. - 任意の一文字
+	^ - 行頭
+	$ - 行末
+	*/
+	(function(lesson) {
+		var s = '@taguchi, @fkoji, @dotinstall';
+		var rs = s.match(/@t.guchi/);
+		if (rs) {
+			console.log('マッチしました！' + ' ' + lesson);
+		}
+	})('#04-01');
+	
+	(function(lesson) {
+		var s = '@taguchi, @fkoji, @dotinstall';
+		var rs = s.match(/^@taguchi/);
+		if (rs) {
+			console.log('マッチしました！' + ' ' + lesson);
+		}
+	})('#04-02');
+	
+	(function(lesson) {
+		var s = '@taguchi, @fkoji, @dotinstall';
+		var rs = s.match(/@taguchi$/);
+		if (rs) {
+			console.log('マッチしました！' + ' ' + lesson);
+		} else {
+			console.log('マッチしませんでした！' + ' ' + lesson); // こっちが表示される
+		}
+	})('#04-03');
+
+})();
+
+// #05
+(function(lesson) {
+	/*
+	0{2} - 直前の文字の繰り返す回数 → 00
+	0{2,} - 00, 000, 000000000
+	0{2,4} - 00, 000, 0000
+	*/
+	var s = '@taguchi, @fkoji, @dotinstall';
+	var rs = s.match(/.{8}/);
+	if (rs) {
+		console.log('マッチしました！' + ' ' + lesson);
+	}
+})('#05');
+
+// #06
+(function() {
+	/*
+	a? 0 or 1
+	a* 0 or more
+	a+ 1 or more
+	*/
+	(function(lesson) {
+		var s = '@taguchi, @fkoji, @dotinstall';
+		var rs = s.match(/@ta?guchi/);
+		if (rs) {
+			console.log('マッチしました！' + ' ' + lesson);
+		}
+	})('#06-01');
+	
+	(function(lesson) {
+		var s = '@taguchi, @fkoji, @dotinstall';
+		var rs = s.match(/@ta*guchi/);
+		if (rs) {
+			console.log('マッチしました！' + ' ' + lesson);
+		}
+	})('#06-02');
+	
+	(function(lesson) {
+		var s = '@taguchi, @fkoji, @dotinstall';
+		var rs = s.match(/@ta+guchi/);
+		if (rs) {
+			console.log('マッチしました！' + ' ' + lesson);
+		}
+	})('#06-03');
+})();
+
+// #07
+(function() {
+	/*
+	() - group
+	|  - or
+	*/
+	(function(lesson) {
+		var s = '@taguchi, @fkoji, @dotinstall';
+		var rs = s.match(/@t(...)chi/);
+		if (rs) {
+			console.log('マッチしました！' + ' ' + lesson)}
+	})('#07-01');
+	(function(lesson) {
+		var s = '@taguchi, @fkoji, @dotinstall';
+		var rs = s.match(/@ta|bguchi/);
+		if (rs) {
+			console.log('マッチしました！' + ' ' + lesson);
+		}
+	})('#07-02');
+})();
+
+// #08
+(function(lesson) {
+	/*
+	\n - 改行
+	\t - タブ
+	\d - 数字 [0-9]
+	\w - 英数字_ [A-Za-z0-9_]
+	\s - スペース、タブ
+	\メタ文字 - メタ文字
+	*/
+	var s = '    ';
+	var rs = s.match(/\s{4}/);
+	if (rs) {
+		console.log('マッチしました！' + ' ' + lesson);
+	}
+})('#08');
+
+// #09
+(function() {
+	/*
+	フラグ
+	i - 大文字小文字を区別しない
+	g - すべてのマッチした要素を配列で返す
+	m - 複数行に対応させる
+	*/
+	(function(lesson) {
+		var s = '@TAGUCHI';
+		var rs = s.match(/@taguchi/i);
+		if (rs) {
+			console.log('マッチしました！' + ' ' + lesson);
+		}
+	})('#09-01');
+	(function() {
+		var s = '@taguchi, @fkoji, @dotinstall, #09-02';
+		var rs = s.match(/(.+)/g);
+		if (rs) {
+			console.log(rs);
+		}
+	})();
+	(function(lesson) {
+		var s = '@taguchi, @fkoji, \n@dotinstall';
+		var rs = s.match(/^@dotinstall/m);
+		if (rs) {
+			console.log('マッチしました！' + ' ' + lesson);
+		}
+	})('#09-03');
+})();
+
+// #10
+(function(lesson) {
+	// * + のあとの? - 最小マッチをさせる
+	var s = 'taguchi@dotinstall.com, fkoji@dotinstall.com, admin@dotinstall.com';
+	var rs = s.match(/.+?@dotinstall.com/);
+	console.log(rs + ' ' + lesson);
+})('#10');
+
+// #11
+(function(lesson) {
+	// 正規表現中の一部を抽出する
+	var s = 'taguchi@dotinstall.com';
+	var rs = s.match(/((.+?)@dotinstall(.com))/);
+	console.log(rs[1] + ' ' + lesson);
+})('#11');
+
+// #12
+(function(lesson) {
+	var s = '@taguchi';
+	var rs = s.match(/(@\w{1,15})/);
+	console.log(rs[1] + ' ' + lesson);
+})('#12');
+
+// #13
+(function(lesson) {
+	var s = '<title>ドットインストール</title>';
+	var rs = s.match(/<title>([^<]+)<\/title>/);
+	console.log(rs[1] + ' ' + lesson);
+})('#13');
+
+// #14
+(function(lesson) {
+	var s = '2015-04-19';
+	var rs = s.match(/(\d{4})[-\/](\d{2})[-\/](\d{2})/);
+	console.log(rs[1] + '年' + rs[2] + '月' + rs[3] + '日');
+})('#14');
+/*
+
+正規表現入門 (Regular Expression)
+
+* レッスンのまとめ
+
+#01
+- 概要の説明
+- ひな形ファイルの作成
+
+#02
+- 正規表現を使ったプログラムの実装
+- 動作確認
+
+#03
+- [abc]
+- [a-c]
+- [^abc]
+
+#04
+- .
+- ^
+- $
+
+#05
+- a{2}
+- a{2,}
+- a{2,5}
+
+#06
+- a?
+- a*
+- a+
+
+#07
+- ()
+- |
+
+#08
+- \n
+- \t
+- \d
+- \w
+- \s
+- \メタ文字
+
+#09
+- iフラグ
+- gフラグ
+- mフラグ
+
+#10
+- ?
+
+#11
+- ()
+- RegExp.$n
+
+#12
+- ツイッターIDをマッチさせる正規表現
+
+#13
+- タグの中身を抽出する正規表現
+
+#14
+- 日付表示の変換
+
+*/
+</script>
+</body>
+</html>
